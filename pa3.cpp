@@ -1,10 +1,44 @@
+#include <opencv2/opencv.hpp>
+#include <cmath>
+
+using namespace std;
+using namespace cv;
+
+void genImg() {
+    Mat I(512, 512, CV_32FC1);
+    Mat O;
+
+    for (int r = 0; r < I.rows; r++) {
+        for (int c = 0; c < I.rows; c++) {
+
+            float pixel = 1;
+            //pixel = sin( 0.1 * M_PI * r );
+            //pixel = cos( cos( 0.2 * M_PI * c ) );
+            //pixel = cos( cos( 0.4 * M_PI * c ) );
+            /*pixel = sin( 0.15 * M_PI *
+                        sqrt(r * r + c * c)
+                    );*/
+            pixel = sin( 0.35 * M_PI *
+                        sqrt(r * r + c * c)
+                    );
+
+            I.at<float>(r, c) = pixel;
+        }
+    }
+
+    normalize(I, I, 0, 255, NORM_MINMAX);
+    I.convertTo(O, CV_8UC1);
+
+    imwrite("I5.jpg", O);
+    return;
+}
+
 void DFTShift(Mat& I) {
-	
 	int cx = I.cols / 2;
 	int cy = I.rows / 2;
 
 	// Define quadrants
-	Mat q0(I, Rect(0, 0, cx, cy));   // Top-Left 
+	Mat q0(I, Rect(0, 0, cx, cy));   // Top-Left
 	Mat q1(I, Rect(cx, 0, cx, cy));  // Top-Right
 	Mat q2(I, Rect(0, cy, cx, cy));  // Bottom-Left
 	Mat q3(I, Rect(cx, cy, cx, cy)); // Bottom-Right
@@ -25,7 +59,7 @@ void DFT(Mat Input, Mat& Real, Mat& Imag) {
 	// Real: [Out]  Real part of DFT
 	// Imag: [Out]  Imaginary part of DFT
 
-	// Converting input image to type float 
+	// Converting input image to type float
 	Mat I, II;
 	Input.convertTo(I, CV_32FC1);
 
@@ -46,7 +80,7 @@ void IDFT(Mat& I, Mat Real, Mat Imag) {
 	// I:    [Out] Gray Image
 	// Real: [In]  Real part of DFT
 	// Imag: [In]  Imaginary part of DFT
-	
+
 	// Merging Real and Imag
 	Mat II, J;
 	Mat channels[] = { Real, Imag };
@@ -81,4 +115,9 @@ Mat NotchFilter(int s, int lowerCutOff, int upperCutOff) {
 
 	// Return result
 	return I;
+}
+
+int main(int argc, char** argv) {
+    genImg();
+    return 0;
 }

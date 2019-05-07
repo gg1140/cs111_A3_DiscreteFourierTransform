@@ -4,7 +4,7 @@
 using namespace std;
 using namespace cv;
 
-void genImg() {
+void gen_sinusoid_img() {
     Mat I(512, 512, CV_32FC1);
     Mat O;
 
@@ -118,6 +118,5 @@ Mat NotchFilter(int s, int lowerCutOff, int upperCutOff) {
 }
 
 int main(int argc, char** argv) {
-    genImg();
     return 0;
 }

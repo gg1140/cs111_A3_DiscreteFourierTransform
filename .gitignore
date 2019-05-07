@@ -1,2 +1,6 @@
-PA3.pdf
+Makefile
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles/
 PA3 Code and images/
+test_imgs/
